@@ -1,0 +1,26 @@
+#!/usr/bin/env perl
+
+use v5.12;
+
+use POSIX;
+use Socket;
+
+if ( !@ARGV ) {
+    @ARGV = <STDIN>;
+}
+if ( !@ARGV ) {
+    die "No IPs are given!";
+}
+chomp(@ARGV);
+
+for my $address (@ARGV) {
+    my $hostname = gethostbyaddr( inet_aton($address), AF_INET );
+
+    if ( !$hostname ) {
+        say STDERR "Can't resolve $address";
+        next;
+    }
+
+    say $hostname;
+}
+

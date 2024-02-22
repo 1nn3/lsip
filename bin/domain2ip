@@ -1,0 +1,29 @@
+#!/usr/bin/env perl
+
+use v5.12;
+
+use POSIX;
+use Socket;
+
+if ( !@ARGV ) {
+    @ARGV = <STDIN>;
+}
+if ( !@ARGV ) {
+    die "No domains are given!";
+}
+chomp(@ARGV);
+
+for my $hostname (@ARGV) {
+
+    my @addresses = gethostbyname($hostname);
+
+    if ( !scalar @addresses ) {
+        say STDERR "Can't resolve $hostname";
+        next;
+    }
+
+    @addresses = map { inet_ntoa($_) } @addresses[ 4 .. $#addresses ];
+
+    say join( ' ', @addresses );
+}
+

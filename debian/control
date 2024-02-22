@@ -1,0 +1,21 @@
+Source: lsip
+Maintainer: user <user@host>
+Build-Depends: bash-completion, debhelper (>= 9)
+Build-Depends-Indep: libfile-sharedir-install-perl
+Priority: optional
+Section: misc
+Standards-Version: 4.1.4
+
+Package: lsip
+Architecture: all
+Depends: libgeo-ip-perl,
+         libio-interface-perl,
+         libnet-dns-perl,
+         libnet-netmask-perl,
+         libnet-traceroute-perl,
+         libparse-netstat-perl,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Recommends: net-tools, traceroute
+Description: App::lsip
+ The lsip(1p) script and some IP related tools.

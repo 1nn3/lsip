@@ -1,0 +1,29 @@
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+is-online - Testet ob die Netzwerkverbindung online ist.
+
+=head1 SYNOPSIS
+
+B<is-online>
+
+=head1 DESCRIPTION
+
+Wrapper um zu testen, ob das System online ist.
+Nutzt z.Z. den I<NetworkManager(8)>.
+
+Dies ist ein BASH-Skript.
+
+=head1 EXIT STATUS
+
+Der Rückgabewert ist 0 wenn online und 1 wenn offline.
+
+=head1 SEE ALSO
+
+I<go-online(1p)>, I<go-offline(1p)>, I<is-offline(1p)>, I<nm-online(8)>
+
+=cut
+
