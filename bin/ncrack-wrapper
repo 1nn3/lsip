@@ -1,0 +1,52 @@
+#!/usr/bin/env perl
+
+use Getopt::Long;
+
+my $output;
+my $passwords;
+my $session = "ncrack-session.dat";
+my $targets;
+my $usernames;
+my $no_date;
+GetOptions(
+    "output=s"    => \$output,
+    "passwords=s" => \$passwords,
+    "session=s"   => \$session,
+    "targets=s"   => \$targets,
+    "usernames=s" => \$usernames,
+    "no-date"     => \$no_date,
+) or die("Error in command line arguments");
+
+if ( !-f -r $targets ) {
+    die "No ncrack targets file given";
+}
+
+if ( !$output ) {
+    # output filename
+    use File::Basename;
+    $output = fileparse( $targets, qr/\.[^.]*/ );
+}
+
+if ( !$no_date ) {
+    # add date to output filename
+    $output .= "-%Y-%m-%d-%T";
+}
+
+my @args = (
+    "-oA", "$output", "--append-output", "-iL", $targets,
+    "--save", $session
+);
+
+if ($usernames) {
+    push @args, "-U", $usernames;
+}
+
+if ($passwords) {
+    push @args, "-P", $passwords;
+}
+
+push @args, @ARGV;
+
+system( "ncrack", @args ) == 0
+    or warn "system Ncrack failed: $?";
+

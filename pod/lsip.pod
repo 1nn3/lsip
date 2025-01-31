@@ -1,0 +1,78 @@
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+lsip - Zeigt IPv4-Adressen und verbundene Netzwerke an
+
+=head1 SYNOPSIS
+
+B<lsip> [--details|--block|--ip]
+
+=head1 DESCRIPTION
+
+Zeigt IPv4-Adressen und verbundene Netzwerke an, wobei Interfaces die als
+I<loopback> und/oder I<down> markiert sind ausgelassen werden.
+
+=head1 OPTIONS
+
+=over
+
+=item --block
+
+Netzwerkblock statt IP-Adresse ausgeben.
+
+=item --details
+
+Zeigt den Namen und Details/Flags zum jeweiligen Interface an.
+
+Ausgegeben werden die Flags in der Reihenfolge:
+
+1) network block,
+2) interface,
+3) running,
+4) broadcast,
+5) pt2pt (point-to-point),
+6) loopback,
+7) promiscuous,
+8) multicast,
+9) notrailers,
+10) noarp
+
+	lsip --details | cut -f 2,1
+
+=item --down
+
+Zeigt auch als I<down> markierte Interfaces an.
+
+=item --ip
+
+Print the IP address.
+
+=item --loopback
+
+Zeigt auch als I<loopback> markierte Interfaces an.
+
+=back
+
+=head1 EXAMPLES
+
+Doing an aggressive portscan with Nmap on the localnet:
+
+B<lsip> | xargs nmap -A
+
+Find SSH servers:
+
+B<lsip> | xargs nmap -Pn --open -p 22
+
+ARP scan:
+
+B<lsip> | xargs nmap -sn [--system-dns]
+
+=head1 SIEHE AUCH
+
+L<IO::Interface::Simple(3pm)>, L<Net::Netmask(3pm)>
+
+=cut
+

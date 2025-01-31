@@ -1,0 +1,71 @@
+#!/usr/bin/env perl
+
+use strict;
+use feature 'say';
+
+use Getopt::Long;
+use IO::Interface::Simple;
+use Net::Netmask;
+
+our $block;
+our $counter;
+our $details;
+our $down;
+our $ip;
+our $loopback;
+GetOptions(
+    "block"    => \$block,
+    "details"  => \$details,
+    "down"     => \$down,
+    "ip"       => \$ip,
+    "loopback" => \$loopback,
+) || die $!;
+
+for ( IO::Interface::Simple->interfaces ) {
+
+    if ( !$_->address ) {
+        say STDERR $_, " has no address";
+        next;
+    }
+
+    next if ( !$_->is_running && !$down );
+    next if ( $_->is_loopback && !$loopback );
+
+    my $address;
+    if ($ip) {
+        $address = $_->address;
+    }
+    elsif ($block) {
+        $address = Net::Netmask->new( $_->address, $_->netmask );
+    }
+    else {
+        my $block = Net::Netmask->new( $_->address, $_->netmask );
+        $address = sprintf( '%s/%s', $_->address, $block->bits, );
+    }
+
+    my $line;
+    if ($details) {
+        $line = sprintf(
+            "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
+            $address,
+            $_,
+            ( $_->is_running )     ? "running"     : "",
+            ( $_->is_broadcast )   ? "broadcast"   : "",
+            ( $_->is_pt2pt )       ? "pt2pt"       : "",
+            ( $_->is_loopback )    ? "loopback"    : "",
+            ( $_->is_promiscuous ) ? "promiscuous" : "",
+            ( $_->is_multicast )   ? "multicast"   : "",
+            ( $_->is_notrailers )  ? "notrailers"  : "",
+            ( $_->is_noarp )       ? "noarp"       : "",
+        );
+    }
+    else {
+        $line = $address;
+    }
+
+    say $line;
+    $counter++;
+}
+
+exit !$counter;
+

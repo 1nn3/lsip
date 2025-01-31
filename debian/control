@@ -1,0 +1,24 @@
+Source: nmap-wrapper
+Maintainer: user <user@host>
+Build-Depends: debhelper (>= 9)
+Priority: optional
+Section: net
+Standards-Version: 3.9.8
+
+Package: nmap-wrapper
+Architecture: all
+Depends: libio-interface-perl,
+         libnet-netmask-perl,
+         ndiff,
+         zenmap | nmap,
+         libgeo-ip-perl,
+         libio-interface-perl,
+         libnet-dns-perl,
+         libnet-netmask-perl,
+         libnet-traceroute-perl,
+         libparse-netstat-perl,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Description: Wrapper around Nmap/Zenmap
+ The lsip(1p) script and some IP related tools.
+ Also a wrapper around the Nmap/Zenmap network scanner wich does an aggressive scan to all connected networks.

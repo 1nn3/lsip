@@ -1,0 +1,36 @@
+#!/usr/bin/env perl
+
+use strict;
+
+use App::lsip;
+use Getopt::Long;
+use feature 'say';
+
+# Kommandozeilenargumente einlesen
+our $quiet     = 0;
+our $verbose   = 0;
+our $inputfile = '-';
+GetOptions(
+    "quiet"       => \$quiet,
+    "verbose"     => \$verbose,
+    "inputfile=s" => \$inputfile,
+) || die("Error in command-line-arguments: $!");
+
+if ( !@ARGV ) {
+    @ARGV = <STDIN>;
+}
+if ( !@ARGV ) {
+    die "No domains are given!";
+}
+chomp(@ARGV);
+
+my $counter = 0;
+for (@ARGV) {
+    my $geoip       = App::lsip::geoip_look_up($_);
+    my $dns_reverse = App::lsip::dns_reverse_look_up($_);
+    say "$_\t$geoip\t$dns_reverse";
+    $counter++;
+}
+
+exit !$counter;
+

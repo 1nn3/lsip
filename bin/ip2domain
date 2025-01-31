@@ -1,0 +1,21 @@
+#!/usr/bin/env perl
+
+use v5.12;
+
+use POSIX;
+use Socket;
+
+for my $address ( ( scalar(@ARGV) ) ? @ARGV : <STDIN> ) {
+
+    chomp;
+
+    my $hostname = gethostbyaddr( inet_aton($address), AF_INET );
+
+    if ( !$hostname ) {
+        say STDERR "Can't resolve $address";
+        next;
+    }
+
+    say $hostname;
+}
+

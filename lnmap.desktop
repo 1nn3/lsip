@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=LNmap
+GenericName=GUI Port Scanner
+TryExec=lnmap
+Exec=lnmap --command 'zenmap --nmap'
+Terminal=false
+Icon=/usr/share/zenmap/pixmaps/zenmap.png
+Type=Application
+Categories=Application;Network;Security;
+Comment=Scans the localnet for hosts and services.
+Keywords=network;scan;scanner;IP;security;

@@ -1,0 +1,23 @@
+#!/usr/bin/env perl
+
+use v5.12;
+
+use POSIX;
+use Socket;
+
+for my $hostname ( ( scalar(@ARGV) ) ? @ARGV : <STDIN> ) {
+
+    chomp;
+
+    my @addresses = gethostbyname($hostname);
+
+    if ( !scalar @addresses ) {
+        say STDERR "Can't resolve $hostname";
+        next;
+    }
+
+    @addresses = map { inet_ntoa($_) } @addresses[ 4 .. $#addresses ];
+
+    say join( ' ', @addresses );
+}
+
