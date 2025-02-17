@@ -1,0 +1,18 @@
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+ip2domain - IP in domainname auflösen
+
+=head1 SYNOPSIS
+
+B<ip2domain> <ip…>
+
+It also reads from STDIN.
+
+=head1 SEE ALSO
+
+=cut
+
