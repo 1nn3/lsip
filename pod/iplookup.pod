@@ -1,0 +1,16 @@
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+iplookup - Does country (geoip) and DNS reverse look up for IP-Adresses
+
+=head1 SYNOPSIS
+
+B<iplookup> <ip…>
+
+list-remote-addresses | B<iplookup> # Liest auch von STDIN.
+
+=cut
+

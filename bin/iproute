@@ -1,0 +1,64 @@
+#!/usr/bin/env perl
+
+use strict;
+
+use App::lsip;
+use Getopt::Long;
+use Net::Traceroute;
+use feature 'say';
+
+# Kommandozeilenargumente einlesen
+
+my $args = { host => $ARGV[0] };
+GetOptions(
+    "base-port=s"      => \$args->{base_port},
+    "debuglvl=i"       => \$args->{debuglvl},
+    "max-ttl=i"        => \$args->{max_ttl},
+    "host=s"           => \$args->{host},
+    "text=s"           => \$args->{text},
+    "queries=i"        => \$args->{queries},
+    "query-timeout=i"  => \$args->{query_timeout},
+    "timeout=i"        => \$args->{timeout},
+    "source-address=s" => \$args->{source_address},
+    "tos=s"            => \$args->{tos},
+    "packetlen=i"      => \$args->{packetlen},
+    "trace-program=s"  => \$args->{trace_program},
+    "no-fragment=s"    => \$args->{no_fragment},
+    "use-icmp"         => \$args->{use_icmp},
+    "use-tcp"          => \$args->{use_tcp},
+) || die("Error in command-line-arguments: $!");
+
+if ( !$args->{host} ) {
+    die "No host given! Usage: $0 <host>";
+}
+
+my $traceroute = Net::Traceroute->new(%$args);
+
+if ( !$traceroute->found ) {
+    die "host was not found";
+}
+
+my $hops = $traceroute->hops;
+my $i;
+my $ip;
+my $time;
+my $geoip;
+my $dns_reverse;
+for ( $i = 1; $i < $hops; $i++ ) {
+    $ip          = $traceroute->hop_query_host( $i, 0 ) || "N/A";
+    $time        = $traceroute->hop_query_time( $i, 0 ) || "N/A";
+    $geoip       = App::lsip::geoip_look_up($ip);
+    $dns_reverse = App::lsip::dns_reverse_look_up($ip);
+
+    say sprintf "%3d.\t$time\t$ip\t$geoip\t$dns_reverse", $i;
+}
+
+$ip          = $traceroute->hop_query_host( 0, 0 )  || "N/A";
+$time        = $traceroute->hop_query_time( $i, 0 ) || "N/A";
+$geoip       = App::lsip::geoip_look_up($ip);
+$dns_reverse = App::lsip::dns_reverse_look_up($ip);
+
+say sprintf "%3d.\t$time\t$ip\t$geoip\t$dns_reverse", $i;
+
+say "Total hops: ", $hops;
+

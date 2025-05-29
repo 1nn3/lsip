@@ -1,0 +1,43 @@
+#!/usr/bin/env perl
+
+use Switch;
+use Getopt::Long;
+
+my $targets;
+my $output;
+my $profile;
+my $no_date;
+GetOptions(
+    "targets=s" => \$targets,
+    "profile=s" => \$profile,
+    "output=s"  => \$output,
+    "no-date"   => \$no_date,
+) or die("Error in command line arguments");
+
+if ( !-f -r $targets ) {
+    warn "No nmap targets file given";
+}
+else {
+}
+
+if ( !$output ) {
+    # output filename
+    use File::Basename;
+    $output = fileparse( $targets, qr/\.[^.]*/ );
+}
+
+if ( !$no_date ) {
+    # add date to output filename
+    $output .= "-%Y-%m-%d-%T";
+}
+
+my @args = (
+    "-oX", "$output", "--open", "-T4", "--min-hostgroup", 96, "-Pn", "-iL",
+    $targets
+);
+
+push @args, @ARGV;
+
+system( "nmap", @args ) == 0
+    or die "system Nmap failed: $?";
+

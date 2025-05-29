@@ -1,0 +1,43 @@
+
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+nmap-wrapper - Wrapper around Nmap
+
+=head1 SYNOPSIS
+
+B<nmap-wrapper> --targets <path/to/targets.text> [--profile <name>] -- [ additional nmap arguments ]
+
+=head1 DESCRIPTION
+
+Start portscan using Nmap to scanning the given targets.
+
+=head1 OPTIONS
+
+=over
+
+=item --targets <path/to/targets.text>
+
+=item --profile <name>
+
+Based on Zenmap the following profiles are available: intense scan, intense scan plus udp, intense scan all tcp, intense scan no ping, ping scan, quick scan, quick scan plus, quick traceroute, regular scan, slow comprehensive scan
+
+=item --
+
+Additional nmap arguments.
+
+=back
+
+=head1 EXAMPLES
+
+B<nmap-wrapper> --targets <path/to/targets.text> -- -Pn -sS -sU -p T:-,U:- -sV --version-all -O --osscan-guess
+
+B<nmap-wrapper> --targets <path/to/targets.text> -- -Pn --script=vuln
+
+db_nmap --min-hostgroup 96 -T4 -sV --version-all -O --osscan-guess --script=vuln -sS -Pn -iL <path/to/targets.text>
+
+=cut
+

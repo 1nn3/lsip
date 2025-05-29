@@ -1,0 +1,44 @@
+
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+LNmap - Scannt alle verbundenen Netzwerke
+
+=head1 SYNOPSIS
+
+B<lnmap> [--command zenmap] -- [ additional zenmap arguments ]
+
+B<lnmap> -- [ additional nmap arguments ]
+
+=head1 DESCRIPTION
+
+Ein Wrapper für den Nmap/Zenmap Netzwerkscanner, welcher automatisch alle
+verbundenen Netzwerke scannt.
+
+=head1 OPTIONS
+
+=over
+
+=item --command
+
+The Nmap/Zenmap command to use. Defaults to I<nmap>
+
+=item --targets
+
+The I<-iL path/to/targets> file. Defaults to I<./targets.txt>
+
+=item --
+
+Additional Nmap/Zenmap arguments.
+
+=back
+
+=head1 SEE ALSO
+
+L<nmap(1)>, L<zenmap(1)>
+
+=cut
+

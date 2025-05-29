@@ -1,0 +1,23 @@
+
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+ncrack-restore-session - Wrapper around Ncrack
+
+=head1 SYNOPSIS
+
+B<ncrack-restore-session> [path/to/ncrack-session.dat]
+
+Cronjob
+
+	@reboot ncrack-restore-session
+
+=head1 DESCRIPTION
+
+Do resume/restore a Ncrack session.
+
+=cut
+

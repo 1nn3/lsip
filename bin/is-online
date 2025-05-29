@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# is online wrapper
+
+#set -x
+set -e
+
+nm_online=`command -v nm-online` || nm_online="nm-online"
+
+if ! test -e "$nm_online"; then
+	# true (online) as default
+	true
+	exit
+fi
+
+if ! nm-online -qx; then
+	false
+fi
+

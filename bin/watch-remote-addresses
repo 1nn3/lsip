@@ -1,0 +1,7 @@
+#!/usr/bin/env -S watch sh
+
+#set -x
+set -e
+
+list-remote-addresses "$@" | iplookup | sort | column -t -s '	' | nl
+

@@ -1,0 +1,7 @@
+#!/usr/bin/env -S watch sh
+
+#set -x
+set -e
+
+iproute "$@" | cut -f 1,2,3,4,5,7 | column -t -s '	'
+

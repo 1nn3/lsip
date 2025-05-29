@@ -1,0 +1,13 @@
+# This service is actually a systemd target,
+# but we are using a service since targets cannot be reloaded.
+
+[Unit]
+Description=write-addresses
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/write-addresses
+
+[Install]
+WantedBy=multi-user.target
+

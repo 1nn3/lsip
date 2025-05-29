@@ -1,0 +1,56 @@
+#!/usr/bin/env perl
+
+use feature 'say';
+
+use IO::Interface::Simple;    # libio-interface-perl
+use Net::Netmask;             # libnet-netmask-perl
+use Getopt::Long;
+use Env;
+
+#$ENV{NMAP_PRIVILEGED}=0;
+
+use File::Temp;
+my ( $fh, $fn ) = File::Temp::tempfile();
+
+my $command     = "nmap";
+my @args    = ( "-Pn", "-vvv" );
+my $targets = "./targets.txt";
+GetOptions(
+    "command=s" => \$command,
+    "targets=s" => \$targets,
+) or die( "Error in command line arguments: ", $! );
+
+sub addresses {
+    my @addresses;
+    for ( IO::Interface::Simple->interfaces ) {
+        next if ( !$_->address );
+        next if ( !$_->is_running );
+        next if ( $_->is_loopback );
+        my $block = Net::Netmask->new( $_->address, $_->netmask );
+        push @addresses, sprintf( '%s/%s', $_->address, $block->bits, );
+    }
+    return List::Util::uniq sort @addresses;
+}
+
+if ( grep( !/-iL/, @args ) ) {
+    if ( -e $targets ) {
+        # Das Argument -iL path/to/file anfügen
+        push @args, "-iL", $targets;
+    }
+    else {
+        # push @nmap_args, addresses;
+        foreach (addresses) {
+            say $fh $_;
+        }
+        push @args, "-iL", $fn;
+    }
+}
+
+push @ARGV, @args;
+system( split (/\s+/, $command), @ARGV ) == 0
+    or die "$command @ARGV failed: $?";
+
+END {
+    unlink $fn
+        or warn "Could not unlink $fn: $!";
+}

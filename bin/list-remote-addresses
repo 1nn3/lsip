@@ -1,0 +1,23 @@
+#!/usr/bin/env perl
+
+use strict;
+
+use feature 'say';
+use Getopt::Long;
+use IO::Interface::Simple;
+use List::Util;
+use Net::Netmask;
+use Parse::Netstat;
+
+my $res
+    = Parse::Netstat::parse_netstat( output => join( "", `netstat -ntu` ) );
+
+my @remote_addresses = List::Util::uniq sort map { $_->{foreign_host} }
+    @{ $res->[2]{'active_conns'} };
+
+for (@remote_addresses) {
+    say $_;
+}
+
+exit !scalar @remote_addresses;
+

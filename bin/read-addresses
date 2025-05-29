@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# read-addresses
+# watch -n 1 read-addresses \| nl
+
+#set -x
+set -e
+
+cat "/dev/shm/localnet-addresses" # pipe
+

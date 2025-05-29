@@ -1,0 +1,35 @@
+
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+ncrack-wrapper - Wrapper around Ncrack
+
+=head1 SYNOPSIS
+
+B<ncrack-wrapper> --targets <path/to/targets.text> -- [ additional ncrack arguments ]
+
+=head1 DESCRIPTION
+
+Start bruteforce scan session using Ncrack.
+
+=head1 OPTIONS
+
+=over
+
+=item --targets <path/to/targets.text>
+
+=item --
+
+Additional ncrack arguments.
+
+=back
+
+=head1 EXAMPLES
+
+B<ncrack-wrapper> --targets <path/to/targets.text> -- --proxy socks4://localhost:9050 [ --passwords-first ]
+
+=cut
+

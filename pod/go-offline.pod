@@ -1,0 +1,33 @@
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+go-offline - Schliesst die Netzwerkverbindung
+
+=head1 SYNOPSIS
+
+B<go-offline>
+
+=head1 DESCRIPTION
+
+Wrapper um die Netzwerkverbindung zu schießen.
+Nutzt z.Z. den I<NetworkManager(8)>.
+
+Dies ist ein BASH-Skript.
+
+=head1 FILES
+
+=over
+
+=item ~/.dont-go-offline
+
+=back
+
+=head1 SEE ALSO
+
+I<go-online(1p)>, I<is-online(1p)>, I<is-offline(1p)>, I<nmcli(8)>
+
+=cut
+
