@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+# Get the host/domain from an URI
+#	#!/usr/bin/sed -Ef
+#	s#^(.+:?//)?##
+#	s#/.*$##
+use feature 'say';
+use URI;
+use Getopt::Long;
+for ((@ARGV)?@ARGV:<>) {
+    chomp;
+    eval {
+    	my $uri = URI->new($_);
+        say $uri->host;
+    };
+    $@ && die "Not an URI: ", $_;
+}

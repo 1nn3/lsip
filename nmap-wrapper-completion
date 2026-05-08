@@ -1,0 +1,17 @@
+_lsip() 
+{
+	local cur opts
+	COMPREPLY=()
+	cur=`_get_cword`
+
+	case ${cur} in
+		-*)
+			opts="--block --details --down --loopback --ip"
+			COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+			return 0
+		;;
+	esac
+}
+
+complete -F _lsip lsip
+

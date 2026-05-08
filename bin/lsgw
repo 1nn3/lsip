@@ -1,0 +1,43 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use feature 'say';
+use utf8;
+use Net::Pcap ();               # libnet-pcap-perl
+use Net::Frame::Device;         # libnet-frame-perl
+use Net::Frame::Dump::Online;
+use IO::Interface::Simple;      # libio-interface-perl
+use Net::Netmask;               # libnet-netmask-perl
+my $network_device_name = $ARGV[0] if @ARGV;
+
+unless ($network_device_name) {
+    $network_device_name = Net::Pcap::pcap_lookupdev( \my $error_msg );
+    die "pcap device lookup failed " . ( $error_msg || '' )
+        if $error_msg || not defined $network_device_name;
+}
+
+my $device = Net::Frame::Device->new( dev => $network_device_name );
+
+if (! $device) {
+	die "No gateway found.";
+}
+
+my $pcap = Net::Frame::Dump::Online->new(
+    dev           => $network_device_name,
+    filter        => 'arp and dst host ' . $device->ip,
+    promisc       => 0,
+    unlinkOnStop  => 1,
+    timeoutOnNext => 10
+);
+
+my $if = IO::Interface::Simple->new($network_device_name);
+my $block = Net::Netmask->new( $if->address, $if->netmask );
+
+say STDERR "Interface: ", $if;
+say STDERR "Address: ", $if->address;
+say STDERR "Netmask: ", $if->netmask;
+say STDERR "Gateway: ", $device->gatewayIp; 
+
+my $address = sprintf( '%s/%s', $device->gatewayIp, $block->bits );
+say $address;

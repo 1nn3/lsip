@@ -1,0 +1,20 @@
+#!/usr/bin/perl
+# Make a domain an URI with the scheme HTTPS as the default
+#	#!/usr/bin/sed -Ef
+#	s#^(.*://|)?#SCHEME://#
+use feature 'say';
+use URI;
+use Getopt::Long;
+my $scheme = "https";
+GetOptions( "scheme=s" => \$scheme, )
+    || die("Error in command-line-arguments: $!");
+for ((@ARGV)?@ARGV:<>) {
+    chomp;
+    eval {
+        my $uri = URI->new;
+        $uri->scheme($scheme);
+        $uri->host ($_);
+        say $uri->as_string;
+    };
+    $@ && die "Not a Domain: ", $_;
+}

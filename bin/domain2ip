@@ -1,0 +1,37 @@
+#!/usr/bin/perl
+
+use feature 'say';
+
+use POSIX;
+use Socket;
+
+use Getopt::Std;
+my %opts;
+getopts( '1l', \%opts );
+
+for ((@ARGV)?@ARGV:<>) {
+
+    chomp;
+
+    my @addresses = gethostbyname($_);
+
+    if ( !scalar @addresses ) {
+        say STDERR "Can't resolve ", $_;
+        next;
+    }
+
+    @addresses = map { inet_ntoa($_) } @addresses[ 4 .. $#addresses ];
+
+    if ( $opts{1} ) {
+    	@addresses = $addresses[0];
+    }
+
+    if ( $opts{l} ) {
+        say $_, "\t", join " ", @addresses;
+    }
+    else {
+        for (@addresses) {
+            say $_;
+        }
+    }
+}

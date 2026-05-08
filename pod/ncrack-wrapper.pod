@@ -1,0 +1,60 @@
+
+=pod
+
+=encoding utf8
+
+=head1 NAME
+
+ncrack-wrapper - Wrapper around Ncrack
+
+=head1 SYNOPSIS
+
+B<ncrack-wrapper> --targets <path/to/targets.txt> -- [ additional ncrack arguments ]
+
+Scan only for SSH
+
+nmap -p 22 <targets…> -oX results.xml
+B<ncrack-wrapper> -- [ additional ncrack arguments ]
+
+=head1 DESCRIPTION
+
+Start bruteforce scan session using Ncrack.
+
+=head1 OPTIONS
+
+=over
+
+=item --targets <path/to/targets.txt>
+
+=item --
+
+Additional ncrack arguments.
+
+=back
+
+=head1 DESCRIPTION
+
+Start bruteforce scan session using Ncrack.
+
+=head1 FILES
+
+=over
+
+=item targets.txt
+
+=item results.xml
+
+=item usernames.txt
+
+=item passwords.txt
+
+=item ncrack-session.dat
+
+=back
+
+=head1 EXAMPLES
+
+B<ncrack-wrapper> --targets <path/to/targets.text> -- --proxy socks4://localhost:9050 [ --passwords-first ]
+
+=cut
+

@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+# See also: dns-enum
+set -ex
+export NMAPDIR="."
+#unset NMAP_PRIVILEGED NMAP_UNPRIVILEGED
+xargs dns-enum <domains.txt | domain2ip | unsortuniq >targets.txt

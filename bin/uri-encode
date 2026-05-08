@@ -1,0 +1,7 @@
+#!/usr/bin/perl
+use feature 'say';
+use URI::Escape;
+while (<>) {
+    chomp;
+    say uri_escape($_);
+}

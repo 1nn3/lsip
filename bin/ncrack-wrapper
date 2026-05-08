@@ -1,0 +1,89 @@
+#!/usr/bin/env perl
+
+use feature 'say';
+use Getopt::Long;
+
+my $output = "credentials";
+my $passwords;
+my $session = "ncrack-session.dat";
+my $targets = "targets.txt";
+my $usernames;
+my $date;
+my $directory = ".";
+GetOptions(
+    "directory=s" => \$directory,
+    "output=s"    => \$output,
+    "passwords=s" => \$passwords,
+    "session=s"   => \$session,
+    "targets=s"   => \$targets,
+    "usernames=s" => \$usernames,
+    "date"        => \$date,
+) or die("Error in command line arguments");
+
+if ( !$output ) {
+
+    # output filename
+    use File::Basename;
+    $output = fileparse( $targets, qr/\.[^.]*/ );
+}
+
+if ($date) {
+
+    # add date to output filename
+    $output .= "-%Y-%m-%d-%T";
+}
+
+my @args = (
+    "-vvv", "-g",    "CL=5,to=1h",      "--proxy", "socks4://127.0.0.1:9050",
+    "-oA",  $output, "--append-output", "--save",  $session,
+);
+
+if ( -e "results.xml" ) {
+    push @args, "-iX", "results.xml";
+    warn "Using results.xml";
+}
+elsif ( -e $targets ) {
+    push @args, "-iL", "targets.txt";
+    warn "Using targets.txt";
+}
+else {
+    die "No ncrack targets file given nor Nmap results found";
+}
+
+if ($usernames) {
+    push @args, "-U", $usernames;
+}
+elsif ( -e "usernames.txt" ) {
+    push @args, "-U", "usernames.txt";
+}
+else {
+    # using default usernames
+    push @args, "-U", "$ENV{HOME}/.ncrack/default.usr";
+}
+
+if ($passwords) {
+    push @args, "-P", $passwords;
+}
+elsif ( -e "passwords.txt" ) {
+    push @args, "-P", "passwords.txt";
+}
+else {
+    # using default passwords
+    push @args, "-P", "$ENV{HOME}/.ncrack/default.pwd";
+}
+
+push @args, @ARGV;
+
+if ( -e $session ) {
+
+    # resume session
+    warn "Resume session...";
+    system( "ncrack", ( "--resume", $session ) ) == 0
+        or warn "system Ncrack failed: $?";
+}
+else {
+    say STDERR join " ", $args;
+    system( "ncrack", @args ) == 0
+        or warn "system Ncrack failed: $?";
+}
+

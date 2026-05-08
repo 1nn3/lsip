@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+# Nmap portscan
+# Use -Pn to skip host discovery (Tor blocks ICMP).
+# Use -sT for TCP connect scan (SYN scans won’t work through SOCKS proxies).
+# Scanning through Tor is slow and limited—many targets may block Tor exit nodes.
+# Avoid aggressive scan types like -A or -sS—they often fail or reveal your activity.
+set -ex
+export PATH=".:/usr/local/bin:/usr/bin:/bin"
+export NMAPDIR="."
+#unset NMAP_PRIVILEGED NMAP_UNPRIVILEGED
+nmap -Pn -sT --open -oA results -iL targets.txt

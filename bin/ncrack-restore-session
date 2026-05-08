@@ -1,0 +1,19 @@
+#!/usr/bin/env perl
+
+$ARGV[0] //= "ncrack-session.dat";
+my $quite;
+use Getopt::Long;
+GetOptions( "session=s" => \$ARGV[0], )
+    or die("Error in command line arguments");
+
+if ( !-f -r $ARGV[0] ) {
+    exit;    # die "No ncrack session file given";
+}
+
+my @args = ("--resume");
+
+push @args, @ARGV;
+
+system( "ncrack", @args ) == 0
+    or warn "system Ncrack failed: $?";
+

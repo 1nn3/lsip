@@ -1,0 +1,11 @@
+#!/usr/bin/env -S timeout 60 sh
+# go offline wrapper
+set -e #x
+test -e ~/.dont-go-offline && exit
+nm_online=`command -v nm-online` || nm_online="nm-online"
+nmcli=`command -v nmcli` || nmcli="nmcli"
+while $nm_online -qx; do
+	$nmcli networking off
+	sleep 1
+done
+

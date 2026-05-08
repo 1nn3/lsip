@@ -1,0 +1,19 @@
+#!/usr/bin/env perl
+use feature 'say';
+use IO::Interface::Simple;    # libio-interface-perl
+for ( IO::Interface::Simple->interfaces ) {
+    if ( !$_->address ) {
+        say STDERR $_, ': has no address';
+        next;
+    }
+    if ( !$_->is_running ) {
+        say STDERR $_, ': is not running';
+        next;
+    }
+    if ( $_->is_loopback ) {
+        say STDERR $_, ': is loopback';
+        next;
+    }
+    say $_;
+}
+

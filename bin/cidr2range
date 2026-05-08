@@ -1,0 +1,10 @@
+#!/usr/bin/perl
+use feature 'say';
+use Net::CIDR;    # libnet-cidr-perl
+while (<>) {
+    chomp;
+    for ( Net::CIDR::cidr2octets($_) ) {
+        say $_;
+    }
+}
+

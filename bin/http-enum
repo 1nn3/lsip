@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+# Scan a webserver for common content using nmap(1)
+set -xe
+export PATH=".:/usr/local/bin:/usr/bin:/bin"
+export NMAPDIR="."
+unset NMAP_PRIVILEGED NMAP_UNPRIVILEGED
+cd ~/.nmap || exit
+tmp=$(mktemp --tmpdir=/dev/shm)
+trap 'rm -f -- $tmp' 0 1 2 3 15
+for target; do
+	nmap -vvv -d 2 -Pn -sT -p 80,443 --scan-delay 1s \
+		--script scripts/http-enum.nse --script-args-file args \
+		-oX $tmp $target 1>&2
+	xmllint --xpath 'string(//script[@id="http-enum"]/@output)' $tmp \
+		| sed 's/^[[:space:]]*//; s/[[:space:]]*$//; /^[[:space:]]*$/d' # trim
+done # 2>/dev/null
