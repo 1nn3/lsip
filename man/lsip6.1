@@ -1,0 +1,30 @@
+.\" Manpage for volup by user <user@host>
+
+.TH "lsip6" "1" "2026-10-19" "user" "lsip"
+
+.SH NAME
+
+lsip - Listet IPv6-Adressen auf.
+
+.SH SYNOPSIS
+
+.nf
+lsip
+
+.SH DESCRIPTION
+
+Listet IPv6-Adressen auf.
+
+.IP \(bu 2
+The loopback interface (lo) is always ignored 
+.IP \(bu 2
+Also all interfaces that are down or have no ip-addresses are ignored
+.IP \(bu 2
+Used the CIDR format
+
+.SH SEE ALSO
+
+.BR lsip(1),
+.BR lsgw(1),
+.BR lsgw6(1),
+.BR lrange2cidr(1)

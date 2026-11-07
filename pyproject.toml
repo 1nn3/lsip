@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lsip"
+version = "0.1.0"
+description = "Zeigt IPv4- und IPv6-Adressen, sowie Interfaces und Gateways an"
+#authors = [{ name = "user", email = "user@localhost" }]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+	"netifaces>=0.11"
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+lsip = ["bin/*"]
+
+[tool.setuptools.data-files]
+"share/man/man1" = ["man/*.1"]
+"share/man/man5" = ["man/*.5"]
+
+[project.scripts]
+lsip  = "lsip.bin.lsip:main"
+lsip6 = "lsip.bin.lsip6:main"
+lsgw  = "lsip.bin.lsgw:main"
+lsgw6 = "lsip.bin.lsgw6:main"
+lsif  = "lsip.bin.lsif:main"
+cidr2range = "lsip.bin.cidr2range:main"
+range2cidr = "lsip.bin.range2cidr:main"

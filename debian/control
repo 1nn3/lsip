@@ -1,0 +1,19 @@
+Source: lsip
+Section: net
+Priority: optional
+Maintainer: Steffen Rumberger <inne@sdf-eu.org>
+Build-Depends: debhelper (>= 10.0.0),
+               dh-python,
+               pybuild-plugin-pyproject,
+               python3-all,
+               python3-setuptools
+Standards-Version: 4.1.4
+
+Package: lsip
+Architecture: all
+Depends: python3-netifaces,
+         ${misc:Depends},
+         ${python3:Depends},
+         ${shlibs:Depends}
+Description: Zeigt IP-Adressen, Interfaces und Gateways an
+ Zeigt IPv4- und IPv6-Adressen, sowie Interfaces und Gateways an.
